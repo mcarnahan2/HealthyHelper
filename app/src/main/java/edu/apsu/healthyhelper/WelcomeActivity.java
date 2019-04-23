@@ -3,7 +3,7 @@ package edu.apsu.healthyhelper;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
-public class WelcomeActivity extends AppCompatActivity {
+public class WelcomeActivity extends MenuActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
