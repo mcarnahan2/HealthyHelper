@@ -1,9 +1,12 @@
 package edu.apsu.healthyhelper;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 public class MenuActivity extends AppCompatActivity {
     @Override
@@ -15,6 +18,10 @@ public class MenuActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.calories_page) {
+            Intent intent = new Intent(getApplicationContext(), CaloriesActivity.class);
+            startActivity(intent);
+        }
         
         return super.onOptionsItemSelected(item);
     }
