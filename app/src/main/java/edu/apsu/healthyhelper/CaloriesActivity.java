@@ -22,7 +22,7 @@ public class CaloriesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calories);
 
-        listView = findViewById(R.id.listView);
+        listView = findViewById(R.id.food_listView);
 
         dataSource = new DBDataSource(this);
         LayoutInflater inflater = getLayoutInflater();

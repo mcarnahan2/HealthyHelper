@@ -13,23 +13,10 @@ public class MySqlListHelper extends SQLiteOpenHelper {
     public static final String EXCERCISE_TABLE ="Excercise" ;
 
     public enum FoodColumns {
-        food_id, food, calories;
+        food_id, food, calories, excercise_id, excercise_type;
 
         public static String[] names() {
             FoodColumns[] v = values();
-            String[] names = new String[v.length];
-            for (int i = 0; i < v.length; i++) {
-                names[i] = v[i].toString();
-            }
-            return names;
-        }
-    }
-
-    public enum ExcerciseColumns {
-        excercise_id, excercise_type, calories;
-
-        public static String[] names() {
-            ExcerciseColumns[] v = values();
             String[] names = new String[v.length];
             for (int i = 0; i < v.length; i++) {
                 names[i] = v[i].toString();
@@ -51,9 +38,9 @@ public class MySqlListHelper extends SQLiteOpenHelper {
                 ")";
 
         String sql2 = "CREATE TABLE " + EXCERCISE_TABLE + " ( " +
-                ExcerciseColumns.excercise_id + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                ExcerciseColumns.excercise_type + " TEXT NOT NULL, " +
-                ExcerciseColumns.calories + " INTEGER NOT NULL " +
+                FoodColumns.excercise_id + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                FoodColumns.excercise_type + " TEXT NOT NULL, " +
+                FoodColumns.calories + " INTEGER NOT NULL " +
                 ")";
 
         sqLiteDatabase.execSQL(sql);
