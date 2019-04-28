@@ -19,6 +19,7 @@
         <activity android:name=".WelcomeActivity" />
         <activity android:name=".SignUpActivity" />
         <activity android:name=".CaloriesActivity" />
+        <activity android:name=".WeightTrackerActivity" />
     </application>
 
 </manifest>
