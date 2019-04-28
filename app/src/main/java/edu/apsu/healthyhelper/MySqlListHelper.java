@@ -10,7 +10,7 @@ public class MySqlListHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 2;
 
     public static final String FOOD_TABLE = "Food";
-    private static final String EXCERCISE_TABLE ="Excercise" ;
+    public static final String EXCERCISE_TABLE ="Excercise" ;
 
     public enum FoodColumns {
         food_id, food, calories;

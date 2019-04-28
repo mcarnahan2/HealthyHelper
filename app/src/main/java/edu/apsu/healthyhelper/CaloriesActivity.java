@@ -10,12 +10,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
 public class CaloriesActivity extends AppCompatActivity {
     private DBDataSource dataSource;
-    private ListView listView;
+    private DBDataSourceExcercise dataSourceExcercise;
+    private ListView foodlv = findViewById(R.id.food_listView);
+    private ListView excerciselv = findViewById(R.id.excercise_listView);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +48,9 @@ public class CaloriesActivity extends AppCompatActivity {
 
                                 Food food = dataSource.createfood(foodStr, calories);
 
-                                ArrayAdapter<Food> adapter = (ArrayAdapter<Food>) listView.getAdapter();
-                                adapter.add(food);
-                                adapter.notifyDataSetChanged();
+                                ArrayAdapter<Food> adapterFood = (ArrayAdapter<Food>) foodlv.getAdapter();
+                                adapterFood.add(food);
+                                adapterFood.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("Cancel", null);
@@ -61,6 +64,34 @@ public class CaloriesActivity extends AppCompatActivity {
         excercisButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CaloriesActivity.this);
+                builder.setView(dialogView)
+                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                TextView tv = findViewById(R.id.textView4);
+                                tv.setText("Insert Excercise");
+                                EditText etexcercise = dialogView.findViewById(R.id.editText);
+                                String exerciseStr = etexcercise.getText().toString().trim();
+                                if(exerciseStr.length() == 0){
+                                    return;
+                                }
+                                tv = findViewById(R.id.textView4);
+                                tv.setText("Insert Calories");
+                                EditText etCalories = dialogView.findViewById(R.id.editText2);
+                                int calories  = Integer.parseInt(etCalories.getText().toString().trim());
+
+                                Excercise excercise = dataSourceExcercise.createExcercise(
+                                        exerciseStr, calories);
+
+                                ArrayAdapter<Excercise> adapterExcercise = (ArrayAdapter<Excercise>) excerciselv.getAdapter();
+                                adapterExcercise.add(excercise);
+                                adapterExcercise.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null);
+
+                builder.create().show();
 
             }
         });
@@ -83,10 +114,18 @@ public class CaloriesActivity extends AppCompatActivity {
 
         List<Food> foods = dataSource.getAllFood();
 
-        ArrayAdapter<Food> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
+        ArrayAdapter<Food> adapterFood = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
 
-        listView = findViewById(R.id.listView);
-        listView.setAdapter(adapter);
+        foodlv = findViewById(R.id.food_listView);
+        foodlv.setAdapter(adapterFood);
+
+        List<Excercise> excercises = dataSourceExcercise.getAllExcercise();
+
+        ArrayAdapter<Excercise> adapterExcercise = new ArrayAdapter<>(this, android.R.layout.simple_list_item_2, excercises);
+
+        excerciselv = findViewById(R.id.excercise_listView);
+        excerciselv.setAdapter(adapterExcercise);
+
 
     }
 

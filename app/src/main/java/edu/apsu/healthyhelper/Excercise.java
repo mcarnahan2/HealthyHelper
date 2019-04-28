@@ -5,7 +5,7 @@ public class Excercise {
     private String excercise_type;
     private int calories;
 
-    private Excercise() {
+    public Excercise() {
 
     }
 
