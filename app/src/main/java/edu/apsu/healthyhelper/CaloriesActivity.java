@@ -22,16 +22,15 @@ public class CaloriesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calories);
 
-        listView = findViewById(R.id.food_listView);
-
         dataSource = new DBDataSource(this);
-        LayoutInflater inflater = getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.food_edit_text, null);
 
         Button foodButton = findViewById(R.id.add_food);
         foodButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                LayoutInflater inflater = getLayoutInflater();
+                final View dialogView = inflater.inflate(R.layout.food_edit_text, null);
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(CaloriesActivity.this);
                         builder.setView(dialogView)
                         .setPositiveButton("Save", new DialogInterface.OnClickListener() {
@@ -87,7 +86,7 @@ public class CaloriesActivity extends AppCompatActivity {
 
         ArrayAdapter<Food> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
 
-        ListView listView = findViewById(R.id.listView);
+        ListView listView = findViewById(R.id.food_listView);
         listView.setAdapter(adapter);
 
     }

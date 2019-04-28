@@ -10,13 +10,26 @@ public class MySqlListHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 2;
 
     public static final String FOOD_TABLE = "Food";
-    public static final String EXCERCISE_TABLE ="Excercise" ;
+    public static final String EXERCISE_TABLE ="Excercise" ;
 
     public enum FoodColumns {
-        food_id, food, calories, excercise_id, excercise_type;
+        food_id, food, calories;
 
         public static String[] names() {
             FoodColumns[] v = values();
+            String[] names = new String[v.length];
+            for (int i = 0; i < v.length; i++) {
+                names[i] = v[i].toString();
+            }
+            return names;
+        }
+    }
+
+    public enum ExerciseColumns {
+        exercise_id, exercise_type, calories;
+
+        public static String[] names() {
+            ExerciseColumns[] v = values();
             String[] names = new String[v.length];
             for (int i = 0; i < v.length; i++) {
                 names[i] = v[i].toString();
@@ -37,12 +50,12 @@ public class MySqlListHelper extends SQLiteOpenHelper {
                 FoodColumns.calories + " INTEGER NOT NULL " +
                 ")";
 
-        String sql2 = "CREATE TABLE " + EXCERCISE_TABLE + " ( " +
-                FoodColumns.excercise_id + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                FoodColumns.excercise_type + " TEXT NOT NULL, " +
-                FoodColumns.calories + " INTEGER NOT NULL " +
+        String sql2 = "CREATE TABLE " + EXERCISE_TABLE + " ( " +
+                ExerciseColumns.exercise_id + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                ExerciseColumns.exercise_type + " TEXT NOT NULL, " +
+                ExerciseColumns.calories + " INTEGER NOT NULL " +
                 ")";
-
+        
         sqLiteDatabase.execSQL(sql);
         sqLiteDatabase.execSQL(sql2);
     }
