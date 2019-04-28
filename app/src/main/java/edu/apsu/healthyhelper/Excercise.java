@@ -42,5 +42,5 @@ public class Excercise {
         }
         return tmp;
     }
-    
+
 }
