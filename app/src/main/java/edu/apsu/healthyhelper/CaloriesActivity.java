@@ -10,20 +10,20 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.List;
 
 public class CaloriesActivity extends AppCompatActivity {
     private DBDataSource dataSource;
     private DBDataSourceExcercise dataSourceExcercise;
-    private ListView foodlv = findViewById(R.id.food_listView);
-    private ListView excerciselv = findViewById(R.id.excercise_listView);
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calories);
+
+        listView = findViewById(R.id.listView);
 
         dataSource = new DBDataSource(this);
         LayoutInflater inflater = getLayoutInflater();
@@ -48,9 +48,9 @@ public class CaloriesActivity extends AppCompatActivity {
 
                                 Food food = dataSource.createfood(foodStr, calories);
 
-                                ArrayAdapter<Food> adapterFood = (ArrayAdapter<Food>) foodlv.getAdapter();
-                                adapterFood.add(food);
-                                adapterFood.notifyDataSetChanged();
+                                ArrayAdapter<Food> adapter = (ArrayAdapter<Food>) listView.getAdapter();
+                                adapter.add(food);
+                                adapter.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("Cancel", null);
@@ -60,8 +60,8 @@ public class CaloriesActivity extends AppCompatActivity {
             }
         });
 
-        Button excercisButton = findViewById(R.id.add_excercise);
-        excercisButton.setOnClickListener(new View.OnClickListener() {
+        Button excerciseButton = findViewById(R.id.add_excercise);
+        excerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(CaloriesActivity.this);
@@ -69,24 +69,19 @@ public class CaloriesActivity extends AppCompatActivity {
                         .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                TextView tv = findViewById(R.id.textView4);
-                                tv.setText("Insert Excercise");
-                                EditText etexcercise = dialogView.findViewById(R.id.editText);
-                                String exerciseStr = etexcercise.getText().toString().trim();
+                                EditText etfood = dialogView.findViewById(R.id.editText);
+                                String exerciseStr = etfood.getText().toString().trim();
                                 if(exerciseStr.length() == 0){
                                     return;
                                 }
-                                tv = findViewById(R.id.textView4);
-                                tv.setText("Insert Calories");
                                 EditText etCalories = dialogView.findViewById(R.id.editText2);
                                 int calories  = Integer.parseInt(etCalories.getText().toString().trim());
 
-                                Excercise excercise = dataSourceExcercise.createExcercise(
-                                        exerciseStr, calories);
+                                Excercise excercise = dataSourceExcercise.createExcercise(exerciseStr, calories);
 
-                                ArrayAdapter<Excercise> adapterExcercise = (ArrayAdapter<Excercise>) excerciselv.getAdapter();
-                                adapterExcercise.add(excercise);
-                                adapterExcercise.notifyDataSetChanged();
+                                ArrayAdapter<Excercise> adapter = (ArrayAdapter<Excercise>) listView.getAdapter();
+                                adapter.add(excercise);
+                                adapter.notifyDataSetChanged();
                             }
                         })
                         .setNegativeButton("Cancel", null);
@@ -111,21 +106,10 @@ public class CaloriesActivity extends AppCompatActivity {
         super.onStart();
 
         dataSource.open();
+        dataSourceExcercise.open();
 
-        List<Food> foods = dataSource.getAllFood();
-
-        ArrayAdapter<Food> adapterFood = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
-
-        foodlv = findViewById(R.id.food_listView);
-        foodlv.setAdapter(adapterFood);
-
-        List<Excercise> excercises = dataSourceExcercise.getAllExcercise();
-
-        ArrayAdapter<Excercise> adapterExcercise = new ArrayAdapter<>(this, android.R.layout.simple_list_item_2, excercises);
-
-        excerciselv = findViewById(R.id.excercise_listView);
-        excerciselv.setAdapter(adapterExcercise);
-
+        FoodList();
+        ExcerciseList();
 
     }
 
@@ -134,6 +118,27 @@ public class CaloriesActivity extends AppCompatActivity {
         super.onStop();
 
         dataSource.close();
+        dataSourceExcercise.close();
+    }
+
+    public void FoodList() {
+        List<Food> foods = dataSource.getAllFood();
+
+        ArrayAdapter<Food> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
+
+        ListView listView = findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+
+    }
+
+    public void ExcerciseList() {
+        List<Excercise> excercises = dataSourceExcercise.getAllExcercise();
+
+        ArrayAdapter<Excercise> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_2, excercises);
+
+        ListView listView = findViewById(R.id.listView);
+        listView.setAdapter(adapter);
+
     }
 
 }

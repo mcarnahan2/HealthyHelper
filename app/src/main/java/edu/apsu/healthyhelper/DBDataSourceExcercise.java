@@ -27,17 +27,17 @@ public class DBDataSourceExcercise {
     public Excercise createExcercise(String exerciseStr, int calories) {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(MySqlListHelper.FoodColumns.ExcerciseColumns.excercise_type.toString(), exerciseStr);
+        contentValues.put(MySqlListHelper.ExcerciseColumns.excercise_type.toString(), exerciseStr);
 
-        contentValues.put(MySqlListHelper.FoodColumns.ExcerciseColumns.calories.toString(), calories);
+        contentValues.put(MySqlListHelper.ExcerciseColumns.calories.toString(), calories);
         //INSERT
         long id = database.insert(MySqlListHelper.EXCERCISE_TABLE, null, contentValues);
 
         //SELECT
         Cursor cursor = database.query(
                 MySqlListHelper.EXCERCISE_TABLE,
-                MySqlListHelper.FoodColumns.ExcerciseColumns.names(),
-                MySqlListHelper.FoodColumns.ExcerciseColumns.excercise_id + " = " + id,
+                MySqlListHelper.ExcerciseColumns.names(),
+                MySqlListHelper.ExcerciseColumns.excercise_id + " = " + id,
                 null, null, null, null
         );
 
@@ -51,7 +51,7 @@ public class DBDataSourceExcercise {
     public List<Excercise> getAllExcercise() {
         List<Excercise> excercises = new ArrayList<>();
 
-        String[] columns = MySqlListHelper.FoodColumns.ExcerciseColumns.names();
+        String[] columns = MySqlListHelper.ExcerciseColumns.names();
 
         Cursor cursor = database.query(MySqlListHelper.EXCERCISE_TABLE, columns, null, null, null, null, null);
 
@@ -70,13 +70,13 @@ public class DBDataSourceExcercise {
     private Excercise cursorToComment(Cursor cursor) {
         Excercise excercises = new Excercise();
 
-        int excerciseid = cursor.getInt(MySqlListHelper.FoodColumns.ExcerciseColumns.excercise_id.ordinal());
+        int excerciseid = cursor.getInt(MySqlListHelper.ExcerciseColumns.excercise_id.ordinal());
         excercises.setExcercise_id(excerciseid);
 
-        String excerciseStr = cursor.getString(MySqlListHelper.FoodColumns.ExcerciseColumns.excercise_type.ordinal());
+        String excerciseStr = cursor.getString(MySqlListHelper.ExcerciseColumns.excercise_type.ordinal());
         excercises.setExcercise_type(excerciseStr);
 
-        int calories = cursor.getInt(MySqlListHelper.FoodColumns.ExcerciseColumns.calories.ordinal());
+        int calories = cursor.getInt(MySqlListHelper.ExcerciseColumns.calories.ordinal());
         excercises.setCalories(calories);
 
         return excercises;
