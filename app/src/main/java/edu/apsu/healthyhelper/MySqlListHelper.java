@@ -10,16 +10,31 @@ public class MySqlListHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 2;
 
     public static final String FOOD_TABLE = "Food";
+    private static final String EXCERCISE_TABLE ="Excercise" ;
+
     public enum FoodColumns {
         food_id, food, calories;
 
-        public static String[] names(){
+        public static String[] names() {
             FoodColumns[] v = values();
-            String [] names = new String[v.length];
-            for(int i =0; i <v.length; i++){
+            String[] names = new String[v.length];
+            for (int i = 0; i < v.length; i++) {
                 names[i] = v[i].toString();
             }
             return names;
+        }
+
+        public enum ExcerciseColumns {
+            excercise_id, excercise_type, calories;
+
+            public static String[] names() {
+                ExcerciseColumns[] v = values();
+                String[] names = new String[v.length];
+                for (int i = 0; i < v.length; i++) {
+                    names[i] = v[i].toString();
+                }
+                return names;
+            }
         }
     }
 
@@ -35,7 +50,14 @@ public class MySqlListHelper extends SQLiteOpenHelper {
                 FoodColumns.calories + " INTEGER NOT NULL " +
                 ")";
 
+        String sql2 = "CREATE TABLE " + EXCERCISE_TABLE + " ( " +
+                FoodColumns.ExcerciseColumns.excercise_id + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
+                FoodColumns.ExcerciseColumns.excercise_type + " TEXT NOT NULL, " +
+                FoodColumns.ExcerciseColumns.calories + " INTEGER NOT NULL " +
+                ")";
+
         sqLiteDatabase.execSQL(sql);
+        sqLiteDatabase.execSQL(sql2);
     }
 
 
