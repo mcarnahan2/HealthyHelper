@@ -15,7 +15,6 @@ import java.util.List;
 
 public class CaloriesActivity extends AppCompatActivity {
     private DBDataSource dataSource;
-    private DBDataSourceExcercise dataSourceExcercise;
     ListView listView;
 
     @Override
@@ -64,29 +63,6 @@ public class CaloriesActivity extends AppCompatActivity {
         excerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(CaloriesActivity.this);
-                builder.setView(dialogView)
-                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                EditText etfood = dialogView.findViewById(R.id.editText);
-                                String exerciseStr = etfood.getText().toString().trim();
-                                if(exerciseStr.length() == 0){
-                                    return;
-                                }
-                                EditText etCalories = dialogView.findViewById(R.id.editText2);
-                                int calories  = Integer.parseInt(etCalories.getText().toString().trim());
-
-                                Excercise excercise = dataSourceExcercise.createExcercise(exerciseStr, calories);
-
-                                ArrayAdapter<Excercise> adapter = (ArrayAdapter<Excercise>) listView.getAdapter();
-                                adapter.add(excercise);
-                                adapter.notifyDataSetChanged();
-                            }
-                        })
-                        .setNegativeButton("Cancel", null);
-
-                builder.create().show();
 
             }
         });
@@ -106,22 +82,7 @@ public class CaloriesActivity extends AppCompatActivity {
         super.onStart();
 
         dataSource.open();
-        dataSourceExcercise.open();
 
-        FoodList();
-        ExcerciseList();
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
-        dataSource.close();
-        dataSourceExcercise.close();
-    }
-
-    public void FoodList() {
         List<Food> foods = dataSource.getAllFood();
 
         ArrayAdapter<Food> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
@@ -131,14 +92,11 @@ public class CaloriesActivity extends AppCompatActivity {
 
     }
 
-    public void ExcerciseList() {
-        List<Excercise> excercises = dataSourceExcercise.getAllExcercise();
+    @Override
+    protected void onStop() {
+        super.onStop();
 
-        ArrayAdapter<Excercise> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_2, excercises);
-
-        ListView listView = findViewById(R.id.listView);
-        listView.setAdapter(adapter);
-
+        dataSource.close();
     }
 
 }
