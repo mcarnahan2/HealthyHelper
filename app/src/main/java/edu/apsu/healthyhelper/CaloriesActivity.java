@@ -23,6 +23,12 @@ public class CaloriesActivity extends MenuActivity {
     private DBDataSourceExcercise dataSourceExcercise;
     private DBDataSourceWater dataSourceWater;
     private ListView listView;
+    private float foodAndDrinkCal = 0;
+    private TextView fADtextView;
+    private String fADStr;
+    private String calLeftStr;
+    private float calLeft =0;
+    private TextView leftTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +36,7 @@ public class CaloriesActivity extends MenuActivity {
         setContentView(R.layout.activity_calories);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Float calTotal = prefs.getFloat("calories", 0);
+        final Float calTotal = prefs.getFloat("calories", 0);
         String totalCalStr = calTotal.toString();
 
         TextView tv = findViewById(R.id.total_calories_textView);
@@ -38,6 +44,9 @@ public class CaloriesActivity extends MenuActivity {
 
         tv = findViewById(R.id.total_calc_calories_textView);
         tv.setText(totalCalStr);
+
+        fADtextView = findViewById(R.id.food_textView);
+        leftTextView = findViewById(R.id.used_calories_textView);
 
         dataSourceWater = new DBDataSourceWater(this);
         dataSourceExcercise = new DBDataSourceExcercise(this);
@@ -67,11 +76,20 @@ public class CaloriesActivity extends MenuActivity {
                                 int calories = Integer.parseInt(etCalories.getText().toString().trim());
                                 String cal = String.valueOf(calories);
 
+                                foodAndDrinkCal+=calories;
+                                fADStr = String.valueOf(foodAndDrinkCal);
+                                fADtextView.setText(fADStr);
+
+                                calLeft=calTotal-foodAndDrinkCal;
+                                calLeftStr = String.valueOf(calLeft);
+                                leftTextView.setText(calLeftStr);
+
                                 Food food = dataSource.createfood(foodStr, calories);
 
                                 ArrayAdapter<Food> adapter = (ArrayAdapter<Food>) food_listView.getAdapter();
                                 adapter.add(food);
                                 adapter.notifyDataSetChanged();
+
                             }
                         })
                         .setNegativeButton("Cancel", null);
@@ -99,6 +117,14 @@ public class CaloriesActivity extends MenuActivity {
                                 }
                                 EditText etCalories = dialogView.findViewById(R.id.editText2);
                                 int calories = Integer.parseInt(etCalories.getText().toString().trim());
+
+                                foodAndDrinkCal+=calories;
+                                fADStr = String.valueOf(foodAndDrinkCal);
+                                fADtextView.setText(fADStr);
+
+                                calLeft=calTotal-foodAndDrinkCal;
+                                calLeftStr = String.valueOf(calLeft);
+                                leftTextView.setText(calLeftStr);
 
                                 Excercise excercise = dataSourceExcercise.createexcercise(excerciseStr, calories);
 
