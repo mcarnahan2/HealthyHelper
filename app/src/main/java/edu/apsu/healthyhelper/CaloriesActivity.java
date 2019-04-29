@@ -14,11 +14,14 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 public class CaloriesActivity extends MenuActivity {
     private DBDataSource dataSource;
     private DBDataSourceExcercise dataSourceExcercise;
+    private DBDataSourceWater dataSourceWater;
     private ListView listView;
 
     @Override
@@ -36,11 +39,13 @@ public class CaloriesActivity extends MenuActivity {
         tv = findViewById(R.id.total_calc_calories_textView);
         tv.setText(totalCalStr);
 
+        dataSourceWater = new DBDataSourceWater(this);
         dataSourceExcercise = new DBDataSourceExcercise(this);
         dataSource = new DBDataSource(this);
 
         final ListView food_listView = findViewById(R.id.food_listView);
         final ListView excercise_listView = findViewById(R.id.exercise_listView);
+        final ListView water_listView = findViewById(R.id.water_listView);
 
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.food_edit_text, null);
@@ -55,11 +60,11 @@ public class CaloriesActivity extends MenuActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 EditText etfood = dialogView.findViewById(R.id.editText);
                                 String foodStr = etfood.getText().toString().trim();
-                                if(foodStr.length() == 0){
+                                if (foodStr.length() == 0) {
                                     return;
                                 }
                                 EditText etCalories = dialogView.findViewById(R.id.editText2);
-                                int calories  = Integer.parseInt(etCalories.getText().toString().trim());
+                                int calories = Integer.parseInt(etCalories.getText().toString().trim());
                                 String cal = String.valueOf(calories);
 
                                 Food food = dataSource.createfood(foodStr, calories);
@@ -85,13 +90,15 @@ public class CaloriesActivity extends MenuActivity {
                         .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                TextView tv = findViewById(R.id.textView4);
+                                tv.setText("Insert Excercise");
                                 EditText etexcercise = dialogView.findViewById(R.id.editText);
                                 String excerciseStr = etexcercise.getText().toString().trim();
-                                if(excerciseStr.length() == 0){
+                                if (excerciseStr.length() == 0) {
                                     return;
                                 }
                                 EditText etCalories = dialogView.findViewById(R.id.editText2);
-                                int calories  = Integer.parseInt(etCalories.getText().toString().trim());
+                                int calories = Integer.parseInt(etCalories.getText().toString().trim());
 
                                 Excercise excercise = dataSourceExcercise.createexcercise(excerciseStr, calories);
 
@@ -111,11 +118,31 @@ public class CaloriesActivity extends MenuActivity {
         waterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CaloriesActivity.this);
+                builder.setView(dialogView)
+                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                TextView tv = findViewById(R.id.textView4);
+                                tv.setText("Insert Amount of Bottles");
+                                EditText etwater = dialogView.findViewById(R.id.editText2);
+                                int bottle_count = Integer.parseInt(etwater.getText().toString().trim());
+
+                                Water water = dataSourceWater.createwater(bottle_count);
+
+                                ArrayAdapter<Water> adapter = (ArrayAdapter<Water>) water_listView.getAdapter();
+                                adapter.add(water);
+                                adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null);
+
+                builder.create().show();
 
             }
         });
-
     }
+
 
     @Override
     protected void onStart() {
@@ -123,9 +150,11 @@ public class CaloriesActivity extends MenuActivity {
 
         dataSource.open();
         dataSourceExcercise.open();
+        dataSourceWater.open();
 
         FoodList();
         ExcerciseList();
+        WaterList();
 
     }
 
@@ -135,6 +164,7 @@ public class CaloriesActivity extends MenuActivity {
 
         dataSource.close();
         dataSourceExcercise.close();
+        dataSourceWater.close();
     }
 
     public void FoodList () {
@@ -154,5 +184,15 @@ public class CaloriesActivity extends MenuActivity {
         ListView listView1 = findViewById(R.id.exercise_listView);
         listView1.setAdapter(adapter);
     }
+
+    public void WaterList() {
+        List<Water> waters = dataSourceWater.getAllWater();
+
+        ArrayAdapter<Water> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, waters);
+
+        ListView listView2 = findViewById(R.id.water_listView);
+        listView2.setAdapter(adapter);
+    }
+
 
 }
