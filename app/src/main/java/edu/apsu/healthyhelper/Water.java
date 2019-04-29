@@ -22,4 +22,13 @@ public class Water {
     public void setBottle_count(String bottle_count) {
         this.bottle_count = bottle_count;
     }
+
+    @Override
+    public String toString() {
+        String tmp = bottle_count;
+        if(tmp.length() > 20){
+            tmp = tmp.substring(0, 20) + " ...";
+        }
+        return tmp;
+    }
 }

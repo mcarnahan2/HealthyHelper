@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -84,9 +85,9 @@ public class CaloriesActivity extends MenuActivity {
         final ListView water_listView = findViewById(R.id.water_listView);
 
         LayoutInflater inflater = getLayoutInflater();
-        final View dialogView = inflater.inflate(R.layout.food_edit_text, null);
-        final View dialogView1 = inflater.inflate(R.layout.excercise_edit_text, null);
-        final View dialogView2 = inflater.inflate(R.layout.water_edit_text, null);
+        final View dialogView = inflater.inflate(R.layout.food_edit_text, null, false);
+        final View dialogView1 = inflater.inflate(R.layout.excercise_edit_text, null, false);
+        final View dialogView2 = inflater.inflate(R.layout.water_edit_text, null, false);
 
         Button foodButton = findViewById(R.id.add_food);
         foodButton.setOnClickListener(new View.OnClickListener() {
@@ -203,8 +204,6 @@ public class CaloriesActivity extends MenuActivity {
 
             }
         });
-
-
     }
 
     private void sharedPrefs() {
@@ -244,6 +243,7 @@ public class CaloriesActivity extends MenuActivity {
         dataSourceExcercise.close();
         dataSourceWater.close();
     }
+
 
     public void FoodList () {
         List<Food> foods = dataSource.getAllFood();

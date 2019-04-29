@@ -49,10 +49,6 @@ public class WelcomeActivity extends MenuActivity {
         compactCalendarView = findViewById(R.id.compactcalendar_view);
         compactCalendarView.setUseThreeLetterAbbreviation(true);
 
-        Event event = new Event(Color.RED,1556460000000L, "Teacher's" +
-                "Professional Day"  );
-        compactCalendarView.addEvent(event);
-
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {

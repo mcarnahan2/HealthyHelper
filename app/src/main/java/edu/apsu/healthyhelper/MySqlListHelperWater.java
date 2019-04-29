@@ -32,7 +32,7 @@ public class MySqlListHelperWater extends SQLiteOpenHelper {
 
         String sql = "CREATE TABLE " + WATER_TABLE + " ( " +
                 WaterColumns.water_id + " INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, " +
-                WaterColumns.bottle_count + " INTEGER NOT NULL " +
+                WaterColumns.bottle_count + " TEXT NOT NULL " +
                 ")";
 
         sqLiteDatabase.execSQL(sql);
