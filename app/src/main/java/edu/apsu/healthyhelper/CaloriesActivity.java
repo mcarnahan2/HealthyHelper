@@ -18,7 +18,8 @@ import java.util.List;
 
 public class CaloriesActivity extends MenuActivity {
     private DBDataSource dataSource;
-    ListView listView;
+    private DBDataSourceExcercise dataSourceExcercise;
+    private ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,17 +36,20 @@ public class CaloriesActivity extends MenuActivity {
         tv = findViewById(R.id.total_calc_calories_textView);
         tv.setText(totalCalStr);
 
+        dataSourceExcercise = new DBDataSourceExcercise(this);
         dataSource = new DBDataSource(this);
 
+        final ListView food_listView = findViewById(R.id.food_listView);
+        final ListView excercise_listView = findViewById(R.id.exercise_listView);
+
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.food_edit_text, null);
         Button foodButton = findViewById(R.id.add_food);
         foodButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                LayoutInflater inflater = getLayoutInflater();
-                final View dialogView = inflater.inflate(R.layout.food_edit_text, null);
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(CaloriesActivity.this);
-                        builder.setView(dialogView)
+                builder.setView(dialogView)
                         .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -56,10 +60,11 @@ public class CaloriesActivity extends MenuActivity {
                                 }
                                 EditText etCalories = dialogView.findViewById(R.id.editText2);
                                 int calories  = Integer.parseInt(etCalories.getText().toString().trim());
+                                String cal = String.valueOf(calories);
 
                                 Food food = dataSource.createfood(foodStr, calories);
 
-                                ArrayAdapter<Food> adapter = (ArrayAdapter<Food>) listView.getAdapter();
+                                ArrayAdapter<Food> adapter = (ArrayAdapter<Food>) food_listView.getAdapter();
                                 adapter.add(food);
                                 adapter.notifyDataSetChanged();
                             }
@@ -75,6 +80,29 @@ public class CaloriesActivity extends MenuActivity {
         excerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CaloriesActivity.this);
+                builder.setView(dialogView)
+                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                EditText etexcercise = dialogView.findViewById(R.id.editText);
+                                String excerciseStr = etexcercise.getText().toString().trim();
+                                if(excerciseStr.length() == 0){
+                                    return;
+                                }
+                                EditText etCalories = dialogView.findViewById(R.id.editText2);
+                                int calories  = Integer.parseInt(etCalories.getText().toString().trim());
+
+                                Excercise excercise = dataSourceExcercise.createexcercise(excerciseStr, calories);
+
+                                ArrayAdapter<Excercise> adapter = (ArrayAdapter<Excercise>) excercise_listView.getAdapter();
+                                adapter.add(excercise);
+                                adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null);
+
+                builder.create().show();
 
             }
         });
@@ -94,13 +122,10 @@ public class CaloriesActivity extends MenuActivity {
         super.onStart();
 
         dataSource.open();
+        dataSourceExcercise.open();
 
-        List<Food> foods = dataSource.getAllFood();
-
-        ArrayAdapter<Food> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
-
-        ListView listView = findViewById(R.id.food_listView);
-        listView.setAdapter(adapter);
+        FoodList();
+        ExcerciseList();
 
     }
 
@@ -109,6 +134,25 @@ public class CaloriesActivity extends MenuActivity {
         super.onStop();
 
         dataSource.close();
+        dataSourceExcercise.close();
+    }
+
+    public void FoodList () {
+        List<Food> foods = dataSource.getAllFood();
+
+        ArrayAdapter<Food> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, foods);
+
+        ListView listView = findViewById(R.id.food_listView);
+        listView.setAdapter(adapter);
+    }
+
+    public void ExcerciseList () {
+        List<Excercise> excercises = dataSourceExcercise.getAllExcercise();
+
+        ArrayAdapter<Excercise> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, excercises);
+
+        ListView listView1 = findViewById(R.id.exercise_listView);
+        listView1.setAdapter(adapter);
     }
 
 }

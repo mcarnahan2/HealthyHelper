@@ -5,8 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import org.w3c.dom.Comment;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DBDataSource {
     private SQLiteDatabase database;
@@ -36,7 +43,7 @@ public class DBDataSource {
         //SELECT
         Cursor cursor = database.query(
                 MySqlListHelper.FOOD_TABLE,
-                MySqlListHelper.FoodColumns.names(),
+                MySqlListHelper.FoodColumns.foods(),
                 MySqlListHelper.FoodColumns.food_id + " = " + id,
                 null, null, null, null
         );
@@ -51,7 +58,7 @@ public class DBDataSource {
     public List<Food> getAllFood() {
         List<Food> foods = new ArrayList<>();
 
-        String[] columns = MySqlListHelper.FoodColumns.names();
+        String[] columns = MySqlListHelper.FoodColumns.foods();
 
         Cursor cursor = database.query(MySqlListHelper.FOOD_TABLE, columns, null, null, null, null, null);
 
