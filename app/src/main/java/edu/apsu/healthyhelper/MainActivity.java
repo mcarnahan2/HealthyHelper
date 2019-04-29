@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
                 editor.putString("name", nameET);
                 editor.putFloat("bmi", bmi);
                 editor.putFloat("calories", calories);
+                editor.putInt("height", height);
+                editor.putInt("weight", weight);
                 editor.apply();
 
                 Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);

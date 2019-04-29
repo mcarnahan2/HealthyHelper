@@ -2,6 +2,7 @@ package edu.apsu.healthyhelper;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
@@ -13,14 +14,27 @@ import android.widget.TextView;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
+import com.jjoe64.graphview.series.PointsGraphSeries;
+
+import java.util.ArrayList;
 
 public class WeightTrackerActivity extends MenuActivity {
+    private String weightStr;
+    private DataPoint[] dp;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weight_tracker);
 
+        final ArrayList<Integer> arrayList = new ArrayList<>();
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String name = prefs.getString("name", null);
+        int height = prefs.getInt("height", 0);
+        int weight = prefs.getInt("weight", 0);
+
+        arrayList.add(weight);
+
         Float bmi = prefs.getFloat("bmi", 0);
         int bmiInt = Math.round(bmi);
 
@@ -54,10 +68,17 @@ public class WeightTrackerActivity extends MenuActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 EditText et = dialogView.findViewById(R.id.weight_edit_text);
-                                String weighttStr = et.getText().toString().trim();
-                                if(weighttStr.length() == 0){
+                                weightStr= et.getText().toString().trim();
+                                if(weightStr.length() == 0){
                                     return;
                                 }
+
+                                dp = new DataPoint[arrayList.size()];
+                                for(int j=0; j<arrayList.size(); j++){
+                                    dp[j] = new DataPoint(j, arrayList.get(j));
+                                }
+
+                                PointsGraphSeries<DataPoint> weightSeries = new PointsGraphSeries<>(dp);
                             }
                         })
                         .setNegativeButton("Cancel", null);
@@ -66,18 +87,47 @@ public class WeightTrackerActivity extends MenuActivity {
             }
         });
 
+        if(weightStr != null){
+            int enteredWeight = Integer.parseInt(weightStr);
+        }
+
+
+        int lowWeight = (int) ((19 * Math.pow((height * 0.025), 2)) / 0.45);
+        int highWeight = (int) ((24 * Math.pow((height * 0.025), 2)) / 0.45);
+
         final GraphView graph = (GraphView) findViewById(R.id.graph);
 
         LineGraphSeries<DataPoint> lowSeries = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(1, 150),
-                new DataPoint(2, 150),
-                new DataPoint(3, 150),
-                new DataPoint(4, 150),
-                new DataPoint(5, 150),
-                new DataPoint(6, 150),
-                new DataPoint(7, 150)
+                new DataPoint(0, lowWeight),
+                new DataPoint(365, lowWeight)
         });
+
+        lowSeries.setColor(Color.GREEN);
+        lowSeries.setThickness(5);
         graph.addSeries(lowSeries);
+
+        LineGraphSeries<DataPoint> highSeries = new LineGraphSeries<>(new DataPoint[] {
+                new DataPoint(0, highWeight),
+                new DataPoint(365, highWeight)
+        });
+
+        highSeries.setColor(Color.RED);
+        highSeries.setThickness(5);
+        graph.addSeries(highSeries);
+
+        dp = new DataPoint[arrayList.size()];
+        for(int i=0; i<arrayList.size(); i++){
+            dp[i] = new DataPoint(i, arrayList.get(i));
+        }
+
+        PointsGraphSeries<DataPoint> weightSeries = new PointsGraphSeries<>(dp);
+
+        weightSeries.setColor(Color.BLACK);
+        graph.addSeries(weightSeries);
+
+        graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setMinX(0.0);
+        graph.getViewport().setMaxX(7.0);
 
         graph.setVisibility(View.VISIBLE);
 
