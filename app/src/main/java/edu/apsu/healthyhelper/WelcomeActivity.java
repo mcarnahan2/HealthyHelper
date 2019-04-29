@@ -1,17 +1,10 @@
 package edu.apsu.healthyhelper;
 
-import android.app.usage.UsageEvents;
-import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
+import android.preference.PreferenceManager;
 import android.widget.CalendarView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.Calendar;
 
 public class WelcomeActivity extends MenuActivity {
     @Override
@@ -19,7 +12,12 @@ public class WelcomeActivity extends MenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome_screen);
 
-        final TextView tv = findViewById(R.id.welcome_textView);
+        TextView tv = findViewById(R.id.welcome_textView);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String name = prefs.getString("name", null);
+
+        tv.setText("Hello " + name);
 
         CalendarView calendarView =  findViewById(R.id.calendarView);
 

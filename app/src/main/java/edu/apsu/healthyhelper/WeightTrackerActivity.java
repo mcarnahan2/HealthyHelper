@@ -1,11 +1,12 @@
 package edu.apsu.healthyhelper;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 
 import com.jjoe64.graphview.GraphView;
@@ -14,6 +15,12 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class WeightTrackerActivity extends MenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String name = prefs.getString("name", null);
+        Float bmi = prefs.getFloat("bmi", 0);
+
+        String bmiStr = bmi.toString();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weight_tracker);
 

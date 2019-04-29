@@ -55,7 +55,7 @@ public class MySqlListHelper extends SQLiteOpenHelper {
                 ExerciseColumns.exercise_type + " TEXT NOT NULL, " +
                 ExerciseColumns.calories + " INTEGER NOT NULL " +
                 ")";
-        
+
         sqLiteDatabase.execSQL(sql);
         sqLiteDatabase.execSQL(sql2);
     }
