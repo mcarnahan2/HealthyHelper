@@ -55,16 +55,47 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="235dp"
+    <ScrollView
+        android:layout_width="395dp"
+        android:layout_height="231dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/textView7">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <Button
+                android:id="@+id/webmd_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="WebMD" />
+
+            <Button
+                android:id="@+id/vandy_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Vanderbilt Health" />
+
+            <Button
+                android:id="@+id/mayo_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Mayo Clinic" />
+
+            <Button
+                android:id="@+id/nih_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="National Institutes of Health" />
+        </LinearLayout>
+    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
