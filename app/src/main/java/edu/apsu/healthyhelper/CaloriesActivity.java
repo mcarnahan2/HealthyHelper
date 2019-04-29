@@ -58,6 +58,9 @@ public class CaloriesActivity extends MenuActivity {
 
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.food_edit_text, null);
+        final View dialogView1 = inflater.inflate(R.layout.excercise_edit_text, null);
+        final View dialogView2 = inflater.inflate(R.layout.water_edit_text, null);
+
         Button foodButton = findViewById(R.id.add_food);
         foodButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,12 +94,15 @@ public class CaloriesActivity extends MenuActivity {
                                 adapter.notifyDataSetChanged();
 
                             }
+
                         })
                         .setNegativeButton("Cancel", null);
 
                 builder.create().show();
 
+
             }
+
         });
 
         Button excerciseButton = findViewById(R.id.add_excercise);
@@ -104,18 +110,16 @@ public class CaloriesActivity extends MenuActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(CaloriesActivity.this);
-                builder.setView(dialogView)
+                builder.setView(dialogView1)
                         .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                TextView tv = findViewById(R.id.textView4);
-                                tv.setText("Insert Excercise");
-                                EditText etexcercise = dialogView.findViewById(R.id.editText);
+                                EditText etexcercise = dialogView1.findViewById(R.id.editText);
                                 String excerciseStr = etexcercise.getText().toString().trim();
                                 if (excerciseStr.length() == 0) {
                                     return;
                                 }
-                                EditText etCalories = dialogView.findViewById(R.id.editText2);
+                                EditText etCalories = dialogView1.findViewById(R.id.editText2);
                                 int calories = Integer.parseInt(etCalories.getText().toString().trim());
 
                                 foodAndDrinkCal+=calories;
@@ -145,13 +149,11 @@ public class CaloriesActivity extends MenuActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(CaloriesActivity.this);
-                builder.setView(dialogView)
+                builder.setView(dialogView2)
                         .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                TextView tv = findViewById(R.id.textView4);
-                                tv.setText("Insert Amount of Bottles");
-                                EditText etwater = dialogView.findViewById(R.id.editText2);
+                                EditText etwater = dialogView2.findViewById(R.id.editText2);
                                 int bottle_count = Integer.parseInt(etwater.getText().toString().trim());
 
                                 Water water = dataSourceWater.createwater(bottle_count);

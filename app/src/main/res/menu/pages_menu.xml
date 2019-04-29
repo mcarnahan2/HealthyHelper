@@ -6,9 +6,6 @@ xmlns:android="http://schemas.android.com/apk/res/android">
     android:id="@+id/calories_page"
     android:title="Calories" />
 <item
-    android:id="@+id/exercise_page"
-    android:title="Exercises" />
-<item
     android:id="@+id/calendar_page"
     android:title="Calendar" />
 <item
