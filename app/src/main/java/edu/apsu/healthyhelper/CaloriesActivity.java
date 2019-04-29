@@ -29,6 +29,9 @@ public class CaloriesActivity extends MenuActivity {
     private String calLeftStr;
     private float calLeft =0;
     private TextView leftTextView;
+    private String calExStr;
+    private float calEx =0;
+    private TextView exTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +50,7 @@ public class CaloriesActivity extends MenuActivity {
 
         fADtextView = findViewById(R.id.food_textView);
         leftTextView = findViewById(R.id.used_calories_textView);
+        exTextView = findViewById(R.id.exercise_textView);
 
         dataSourceWater = new DBDataSourceWater(this);
         dataSourceExcercise = new DBDataSourceExcercise(this);
@@ -122,11 +126,11 @@ public class CaloriesActivity extends MenuActivity {
                                 EditText etCalories = dialogView1.findViewById(R.id.editText2);
                                 int calories = Integer.parseInt(etCalories.getText().toString().trim());
 
-                                foodAndDrinkCal+=calories;
-                                fADStr = String.valueOf(foodAndDrinkCal);
-                                fADtextView.setText(fADStr);
+                                calEx+=calories;
+                                calExStr = String.valueOf(calEx);
+                                exTextView.setText(calExStr);
 
-                                calLeft=calTotal-foodAndDrinkCal;
+                                calLeft=calTotal+calEx;
                                 calLeftStr = String.valueOf(calLeft);
                                 leftTextView.setText(calLeftStr);
 
