@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -57,9 +59,33 @@ public class WelcomeActivity extends MenuActivity {
                 Context context = getApplicationContext();
 
                 if (dateClicked.toString().compareTo("Sun Apr 28 09:00:00 AST 2019") == 0) {
-                    Toast.makeText(context, "Teacher's Professional Day", Toast.LENGTH_SHORT).show();
+                    String message = "<html>" +
+                            "<h1> Menu For The Day </h1>" +
+                            "<p><b>Breakfast:</b> Plain yogurt (with a splash of maple syrup) with granola or berries </p>" +
+                            "<p><b>Lunch:</b> Healthy Egg Salad with Basil </p>" +
+                            "<p><b>Dinner:</b> Veggie Burrito Bowl with Cauliflower Rice  </p>" +
+                            "</html>";
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
+                    builder.setMessage(Html.fromHtml(message));
+                    builder.setPositiveButton("OK", null);
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 } else {
-                    Toast.makeText(context, "No events", Toast.LENGTH_SHORT).show();
+                    String message = "<html>" +
+                            "<h1> Menu For The Day </h1>" +
+                            "<p><b>Breakfast:</b> Plain yogurt (with a splash of maple syrup) with granola or berries </p>" +
+                            "<p><b>Lunch:</b> Healthy Egg Salad with Basil </p>" +
+                            "<p><b>Dinner:</b> Veggie Burrito Bowl with Cauliflower Rice  </p>" +
+                            "</html>";
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(WelcomeActivity.this);
+                    builder.setMessage(Html.fromHtml(message));
+                    builder.setPositiveButton("OK", null);
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
             }
 
