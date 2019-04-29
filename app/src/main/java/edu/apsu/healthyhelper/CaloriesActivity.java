@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-public class CaloriesActivity extends AppCompatActivity {
+public class CaloriesActivity extends MenuActivity {
     private DBDataSource dataSource;
     ListView listView;
 
