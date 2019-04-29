@@ -1,7 +1,9 @@
 package edu.apsu.healthyhelper;
 
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -21,6 +24,16 @@ public class CaloriesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calories);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Float calTotal = prefs.getFloat("calories", 0);
+        String totalCalStr = calTotal.toString();
+
+        TextView tv = findViewById(R.id.total_calories_textView);
+        tv.setText(totalCalStr);
+
+        tv = findViewById(R.id.total_calc_calories_textView);
+        tv.setText(totalCalStr);
 
         dataSource = new DBDataSource(this);
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         Button button = findViewById(R.id.login_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -36,12 +36,20 @@ public class MainActivity extends AppCompatActivity {
                 String weightET = et.getText().toString();
                 int weight = Integer.parseInt(weightET);
 
+
                 float bmi = (float) (weight * 0.45) / (float) (Math.pow((height * 0.025), 2)) ;
+
+                //Female
+                //float calories = (float) ((10 * (float) weight + 6.25 * (float) height - 5 * (float) age -161));
+
+                //Male
+                float calories = (float) ((10 * (float) weight + 6.25 * (float) height - 5 * (float) age + 5));
 
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString("name", nameET);
                 editor.putFloat("bmi", bmi);
+                editor.putFloat("calories", calories);
                 editor.apply();
 
                 Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
