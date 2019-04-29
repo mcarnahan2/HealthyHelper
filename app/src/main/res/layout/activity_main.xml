@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:inputType="textPersonName"
+                android:paddingLeft="20dp"
                 tools:layout_editor_absoluteX="165dp"
                 tools:layout_editor_absoluteY="369dp" />
         </LinearLayout>
@@ -74,7 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="number"
+                android:paddingLeft="20dp" />
 
         </LinearLayout>
 
@@ -95,7 +97,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="number"
+                android:paddingLeft="20dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -115,7 +118,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="number" />
+                android:inputType="number"
+                android:paddingLeft="20dp" />
         </LinearLayout>
 
         <LinearLayout
