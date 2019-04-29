@@ -31,10 +31,10 @@ public class DBDataSourceWater {
         database.close();
     }
 
-    public Water createwater(int bottle_count) {
+    public Water createwater(String waterStr) {
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(MySqlListHelperWater.WaterColumns.bottle_count.toString(), bottle_count);
+        contentValues.put(MySqlListHelperWater.WaterColumns.bottle_count.toString(), waterStr);
 
         //INSERT
         long id = database.insert(MySqlListHelperWater.WATER_TABLE, null, contentValues);
@@ -80,7 +80,7 @@ public class DBDataSourceWater {
         int waterid = cursor.getInt(MySqlListHelperWater.WaterColumns.water_id.ordinal());
         waters.setWater_id(waterid);
 
-        int bottleCount = cursor.getInt(MySqlListHelperWater.WaterColumns.bottle_count.ordinal());
+        String bottleCount = cursor.getString(MySqlListHelperWater.WaterColumns.bottle_count.ordinal());
         waters.setBottle_count(bottleCount);
 
         return waters;

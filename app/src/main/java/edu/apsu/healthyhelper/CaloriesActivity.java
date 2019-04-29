@@ -19,6 +19,8 @@ import org.w3c.dom.Text;
 
 import java.util.List;
 
+import static edu.apsu.healthyhelper.MySqlListHelperWater.WaterColumns.bottle_count;
+
 public class CaloriesActivity extends MenuActivity {
     private DBDataSource dataSource;
     private DBDataSourceExcercise dataSourceExcercise;
@@ -183,9 +185,12 @@ public class CaloriesActivity extends MenuActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 EditText etwater = dialogView2.findViewById(R.id.editText2);
-                                int bottle_count = Integer.parseInt(etwater.getText().toString().trim());
+                                String waterStr = etwater.getText().toString().trim();
+                                if (waterStr.length() == 0) {
+                                    return;
+                                }
 
-                                Water water = dataSourceWater.createwater(bottle_count);
+                                Water water = dataSourceWater.createwater(waterStr);
 
                                 ArrayAdapter<Water> adapter = (ArrayAdapter<Water>) water_listView.getAdapter();
                                 adapter.add(water);

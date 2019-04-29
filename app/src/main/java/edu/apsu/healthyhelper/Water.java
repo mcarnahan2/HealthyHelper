@@ -2,7 +2,7 @@ package edu.apsu.healthyhelper;
 
 public class Water {
     private int water_id;
-    private int bottle_count;
+    private String bottle_count;
 
     public Water () {
     }
@@ -15,11 +15,11 @@ public class Water {
         this.water_id = water_id;
     }
 
-    public int getBottle_count() {
+    public String getBottle_count() {
         return bottle_count;
     }
 
-    public void setBottle_count(int bottle_count) {
+    public void setBottle_count(String bottle_count) {
         this.bottle_count = bottle_count;
     }
 }
