@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -17,16 +18,21 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.PointsGraphSeries;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class WeightTrackerActivity extends MenuActivity {
     private String weightStr;
     private DataPoint[] dp;
+    private PointsGraphSeries<DataPoint> weightSeries;
+    private GraphView graphView;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weight_tracker);
 
         final ArrayList<Integer> arrayList = new ArrayList<>();
+        final GraphView graph = (GraphView) findViewById(R.id.graph);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String name = prefs.getString("name", null);
@@ -69,16 +75,26 @@ public class WeightTrackerActivity extends MenuActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 EditText et = dialogView.findViewById(R.id.weight_edit_text);
                                 weightStr= et.getText().toString().trim();
+                                if(!weightStr.equals("")) {
+                                    int weightAdd = Integer.parseInt(weightStr);
+                                    arrayList.add(weightAdd);
+                                }
                                 if(weightStr.length() == 0){
                                     return;
                                 }
 
+
+
                                 dp = new DataPoint[arrayList.size()];
                                 for(int j=0; j<arrayList.size(); j++){
                                     dp[j] = new DataPoint(j, arrayList.get(j));
+                                    Log.i("WEIGHT", "DP is " + dp[j]);
                                 }
 
-                                PointsGraphSeries<DataPoint> weightSeries = new PointsGraphSeries<>(dp);
+                                weightSeries = new PointsGraphSeries<>(dp);
+
+                                weightSeries.setColor(Color.BLACK);
+                                graph.addSeries(weightSeries);
                             }
                         })
                         .setNegativeButton("Cancel", null);
@@ -95,7 +111,6 @@ public class WeightTrackerActivity extends MenuActivity {
         int lowWeight = (int) ((19 * Math.pow((height * 0.025), 2)) / 0.45);
         int highWeight = (int) ((24 * Math.pow((height * 0.025), 2)) / 0.45);
 
-        final GraphView graph = (GraphView) findViewById(R.id.graph);
 
         LineGraphSeries<DataPoint> lowSeries = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(0, lowWeight),
@@ -120,7 +135,7 @@ public class WeightTrackerActivity extends MenuActivity {
             dp[i] = new DataPoint(i, arrayList.get(i));
         }
 
-        PointsGraphSeries<DataPoint> weightSeries = new PointsGraphSeries<>(dp);
+        weightSeries = new PointsGraphSeries<>(dp);
 
         weightSeries.setColor(Color.BLACK);
         graph.addSeries(weightSeries);
