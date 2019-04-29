@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -52,6 +53,26 @@ public class CaloriesActivity extends MenuActivity {
         leftTextView = findViewById(R.id.used_calories_textView);
         exTextView = findViewById(R.id.exercise_textView);
 
+        if(prefs.contains("foodCal")){
+            foodAndDrinkCal = prefs.getFloat("foodCal", 0);
+            fADStr = Float.toString(foodAndDrinkCal);
+            fADtextView.setText(fADStr);
+            Log.i("Cal", "Food is " + fADStr);
+        }
+        if(prefs.contains("calLeft")){
+            calLeft = prefs.getFloat("calLeft", 0);
+            calLeftStr = Float.toString(calLeft);
+            leftTextView.setText(calLeftStr);
+            Log.i("Cal", "Cal left is " + calLeftStr);
+        }
+        if(prefs.contains("calEx")){
+            calEx = prefs.getFloat("calEx", 0);
+            calExStr = Float.toString(calEx);
+            exTextView.setText(calExStr);
+            Log.i("Cal", "Exercise is " + calExStr);
+        }
+
+
         dataSourceWater = new DBDataSourceWater(this);
         dataSourceExcercise = new DBDataSourceExcercise(this);
         dataSource = new DBDataSource(this);
@@ -97,6 +118,8 @@ public class CaloriesActivity extends MenuActivity {
                                 adapter.add(food);
                                 adapter.notifyDataSetChanged();
 
+                                sharedPrefs();
+
                             }
 
                         })
@@ -139,6 +162,8 @@ public class CaloriesActivity extends MenuActivity {
                                 ArrayAdapter<Excercise> adapter = (ArrayAdapter<Excercise>) excercise_listView.getAdapter();
                                 adapter.add(excercise);
                                 adapter.notifyDataSetChanged();
+
+                                sharedPrefs();
                             }
                         })
                         .setNegativeButton("Cancel", null);
@@ -173,8 +198,18 @@ public class CaloriesActivity extends MenuActivity {
 
             }
         });
+
+
     }
 
+    private void sharedPrefs() {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putFloat("foodCal", foodAndDrinkCal);
+        editor.putFloat("calLeft", calLeft);
+        editor.putFloat("calEx", calEx);
+        editor.apply();
+    }
 
     @Override
     protected void onStart() {
@@ -193,6 +228,12 @@ public class CaloriesActivity extends MenuActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
+        foodAndDrinkCal = 0;
+        calLeft = 0;
+        calEx = 0;
+
+        sharedPrefs();
 
         dataSource.close();
         dataSourceExcercise.close();

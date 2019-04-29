@@ -83,8 +83,6 @@ public class WeightTrackerActivity extends MenuActivity {
                                     return;
                                 }
 
-
-
                                 dp = new DataPoint[arrayList.size()];
                                 for(int j=0; j<arrayList.size(); j++){
                                     dp[j] = new DataPoint(j, arrayList.get(j));
