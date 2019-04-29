@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
@@ -15,14 +16,31 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class WeightTrackerActivity extends MenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_weight_tracker);
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String name = prefs.getString("name", null);
         Float bmi = prefs.getFloat("bmi", 0);
+        int bmiInt = Math.round(bmi);
 
-        String bmiStr = bmi.toString();
+        String bmiStr = String.valueOf(bmiInt);
+        String bmiRisk = "";
 
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_weight_tracker);
+        if(bmiInt < 19){
+            bmiRisk = "Underweight BMI";
+        } else if (bmiInt >= 19 && bmiInt <=24){
+            bmiRisk = "Healthy BMI";
+        } else if (bmiInt >= 25 && bmiInt <= 29) {
+            bmiRisk = "Overweight BMI";
+        } else if (bmiInt>=30 && bmiInt <= 39) {
+            bmiRisk = "Obesity BMI";
+        } else {
+            bmiRisk = "Extreme Obesity BMI";
+        }
+
+        TextView tv = findViewById(R.id.bmi_textView);
+        tv.setText("Hello, " + name + "! Your BMI is "+ bmiStr + ": " + bmiRisk);
 
         findViewById(R.id.weight_button).setOnClickListener(new View.OnClickListener() {
             @Override

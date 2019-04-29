@@ -24,6 +24,9 @@ public class MenuActivity extends AppCompatActivity {
         } else if (item.getItemId() == R.id.bmi_page){
             Intent intent = new Intent(getApplicationContext(), WeightTrackerActivity.class);
             startActivity(intent);
+        } else if (item.getItemId() == R.id.calendar_page) {
+            Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+            startActivity(intent);
         }
         
         return super.onOptionsItemSelected(item);
